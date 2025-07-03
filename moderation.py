@@ -17,7 +17,7 @@ async def check_nsfw_image(file):
         "https://api.sightengine.com/1.0/check.json",
         files={"media": ("image.jpg", file_bytes)},
         data={
-            "models": "nudity,wad",  # nudity + weapons, alcohol, drugs
+            "models": "nudity",  # nudity
             "api_user": API_USER,
             "api_secret": API_SECRET,
         }
