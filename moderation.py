@@ -17,7 +17,7 @@ async def check_nsfw_image(file):
         "https://api.sightengine.com/1.0/check.json",
         files={"media": ("image.jpg", file_bytes)},
         data={
-            "models": "nudity",  # nudity
+            "models": "nudity-2.1",  # nudity
             "api_user": API_USER,
             "api_secret": API_SECRET,
         }
@@ -31,7 +31,7 @@ async def check_nsfw_image(file):
     raw_score = nudity.get("raw", 0)
     partial_score = nudity.get("partial", 0)
 
-    nsfw_score = raw_score + partial_score
+    nsfw_score = max(raw_score, partial_score)
 
     if nsfw_score > 0.7:
         return JSONResponse(content={"status": "REJECTED", "reason": "NSFW content"})
