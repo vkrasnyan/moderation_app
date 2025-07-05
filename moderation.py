@@ -28,10 +28,12 @@ async def check_nsfw_image(file):
     result = response.json()
 
     nudity = result.get("nudity", {})
-    raw_score = nudity.get("raw", 0)
-    partial_score = nudity.get("partial", 0)
+    sexual_activity = nudity.get("sexual_activity", 0)
+    sexual_display = nudity.get("sexual_display", 0)
+    erotica = nudity.get("erotica", 0)
 
-    nsfw_score = max(raw_score, partial_score)
+
+    nsfw_score = max(sexual_activity, sexual_display, erotica)
 
     if nsfw_score > 0.7:
         return JSONResponse(content={"status": "REJECTED", "reason": "NSFW content"})
