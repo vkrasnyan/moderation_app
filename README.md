@@ -1,5 +1,7 @@
 # 🚫 NSFW Image Moderation API
 
+## 🇷🇺 Описание на русском
+
 Простое backend-приложение на FastAPI, которое принимает изображение и отправляет его на проверку в [Sightengine API](https://sightengine.com/) для определения нежелательного контента (NSFW).  
 
 Если вероятность неприемлемого контента превышает 0.7, изображение отклоняется.
@@ -112,6 +114,118 @@ pytest
 ---
 
 Такие шаги позволят превратить проект в полноценный сервис с авторизацией, историей, аналитикой и масштабируемостью.
+
+
+## 🇬🇧 English version
+
+A simple backend application built with FastAPI that accepts an uploaded image and sends it to the Sightengine API to detect unwanted (NSFW) content.
+
+If the probability of NSFW content exceeds 0.7, the image is automatically rejected.
+---
+
+## 📦 Tech Stack
+
+- Python 3.10
+- FastAPI
+- Sightengine API
+- Docker
+- pytest
+
+---
+
+## 🚀 Running Locally
+
+1. Clone the repository and install dependencies:
+
+pip install -r requirements.txt
+
+2. Create a .env file in the project root and fill in your API credentials:
+
+SIGHTENGINE_USER=your_user_id
+SIGHTENGINE_SECRET=your_api_secret
+
+3. Start the development server:
+
+uvicorn main:app --reload
+Server will be available at: http://localhost:8000
+
+## 📸 Example request (curl)
+curl -X POST http://localhost:8000/moderate \
+  -F "file=@example.jpg"
+### 📥 Possible responses:
+- Safe image:
+{"status": "OK"}
+- NSFW content detected:
+{"status": "REJECTED", "reason": "NSFW content"}
+
+## 📬 Example request in Postman
+
+1. Open Postman and create a new request
+2. Method: POST
+3. URL: http://localhost:8000/moderate
+4. Go to the Body tab → choose form-data
+5. Add fields:
+   - **Key**: `file`
+   - **Type**: `File`
+   - **Value**: choose a .jpg or .png image
+6. Click **Send**
+
+### 📥 Ответы:
+- Safe image:
+{
+  "status": "OK"
+}- NSFW content detected:
+{
+  "status": "REJECTED",
+  "reason": "NSFW content"
+}
+
+## 🐳 Running via Docker
+
+### Build the image:
+docker build -t nsfw-api .
+### Run the container with .env:
+docker run --env-file .env -p 8000:8000 nsfw-api
+
+## 🧪 Testing
+
+The project includes a basic test for the /moderate endpoint.
+
+### Run tests in Docker:
+docker build -t nsfw-api .
+docker run --rm -v $(pwd):/app nsfw-api pytest
+
+### Run tests locally:
+pytest
+
+## 📝 Note
+
+To use the Sightengine API, you must sign up at sightengine.com and obtain API credentials.
+
+---
+
+## 🧩 Ideas for further development
+
+This is a minimal MVP that demonstrates basic integration with an image moderation API. To build a full-fledged service, consider adding:
+
+### 🔐 Authentication & Users
+- User registration and authentication (e.g. via JWT or Telegram login)
+- API access control via token
+
+### 🗃️ Data Storage
+- Save moderation history to a database (PostgreSQL, MySQL, etc.)
+- Associate images with users
+- View moderation statistics
+
+### 💾 Image Handling
+- Save uploaded files locally or to S3
+- Preprocess: resize, compress, etc.
+
+### 📊 Admin Dashboard
+- Interface to view moderation results
+- Manual moderation option
+---
+These additions would allow the project to evolve into a scalable image moderation platform with auth, analytics, and persistence.
 
 
 
